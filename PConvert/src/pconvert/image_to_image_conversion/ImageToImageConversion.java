@@ -23,12 +23,15 @@ import com.icafe4j.image.writer.ImageWriter;
 import java.util.concurrent.Callable;
 import pconvert.ConfigInfoModel;
 import pconvert.Constants;
+import pconvert.IConversion;
 
 /**
- *
  * @author riteshpandhurkar
+ *
+ * Used Callable to get callback on thread completion. Image to image
+ * conversion, supports only JPG,TIFF,PNG,GIF,BMP
  */
-public class ImageToImageConversion implements Callable<Boolean> {
+public class ImageToImageConversion implements Callable<Boolean>, IConversion {
 
     private final ConfigInfoModel model;
 
@@ -36,11 +39,26 @@ public class ImageToImageConversion implements Callable<Boolean> {
         this.model = model;
     }
 
-    private boolean convert() {
+    @Override
+    public boolean convert() {
         try {
+
+            // find dest image type
+            ImageType destImageType = ImageType.JPG;
+            if (model.getConversionType().toUpperCase().endsWith(Constants.BMP)) {
+                destImageType = ImageType.BMP;
+            } else if (model.getConversionType().toUpperCase().endsWith(Constants.GIF)) {
+                destImageType = ImageType.GIF;
+            } else if (model.getConversionType().toUpperCase().endsWith(Constants.PNG)) {
+                destImageType = ImageType.PNG;
+            } else if (model.getConversionType().toUpperCase().endsWith(Constants.TIFF)) {
+                destImageType = ImageType.TIFF;
+            } else if (model.getConversionType().toUpperCase().endsWith(Constants.JPG) || model.getConversionType().toLowerCase().endsWith("jpeg")) {
+                destImageType = ImageType.JPG;
+            }
+
             BufferedImage img = ImageIO.read(model.getPathOfSourceFolder() + model.getNameOfSourceFile());
-            ImageType destImageType = getDestImageType(model.getConversionType());
-            FileOutputStream fo = new FileOutputStream(model.getPathOfDestinationFolder() + destImageType.getExtension());
+            FileOutputStream fo = new FileOutputStream(model.getPathOfDestinationFolder() + model.getNameOfDestinationFile());
 
             ImageWriter writer = ImageIO.getWriter(destImageType);
             ImageParam.ImageParamBuilder builder = ImageParam.getBuilder();
@@ -64,7 +82,7 @@ public class ImageToImageConversion implements Callable<Boolean> {
                 case JPG:
                     JPEGOptions jpegOptions = new JPEGOptions();
                     jpegOptions.setQuality(60);
-                    jpegOptions.setColorSpace(JPEGOptions.COLOR_SPACE_YCCK);
+                    jpegOptions.setColorSpace(JPEGOptions.COLOR_SPACE_RGB);
                     jpegOptions.setWriteICCProfile(true);
                     builder.imageOptions(jpegOptions);
                     break;
@@ -88,43 +106,6 @@ public class ImageToImageConversion implements Callable<Boolean> {
             ex.printStackTrace();
         }
         return false;
-    }
-
-    private ImageType getDestImageType(String conversionType) {
-        ImageType type = ImageType.JPG;
-        switch (conversionType) {
-            case Constants.TIFF_TO_BMP:
-            case Constants.GIF_TO_BMP:
-            case Constants.JPG_TO_BMP:
-            case Constants.PNG_TO_BMP:
-                type = ImageType.BMP;
-                break;
-            case Constants.TIFF_TO_GIF:
-            case Constants.BMP_TO_GIF:
-            case Constants.JPG_TO_GIF:
-            case Constants.PNG_TO_GIF:
-                type = ImageType.GIF;
-                break;
-            case Constants.TIFF_TO_PNG:
-            case Constants.GIF_TO_PNG:
-            case Constants.JPG_TO_PNG:
-            case Constants.BMP_TO_PNG:
-                type = ImageType.PNG;
-                break;
-            case Constants.TIFF_TO_JPG:
-            case Constants.GIF_TO_JPG:
-            case Constants.BMP_TO_JPG:
-            case Constants.PNG_TO_JPG:
-                type = ImageType.JPG;
-                break;
-            case Constants.JPG_TO_TIFF:
-            case Constants.GIF_TO_TIFF:
-            case Constants.BMP_TO_TIFF:
-            case Constants.PNG_TO_TIFF:
-                type = ImageType.TIFF;
-                break;
-        }
-        return type;
     }
 
     @Override

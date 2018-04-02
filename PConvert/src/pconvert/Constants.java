@@ -13,7 +13,12 @@ public class Constants {
     public final static String CONFIG_DEST_FILE_NAME = "nameOfDestinationFile";
     public final static String CONFIG_SOURCE_FOLDER_PATH = "pathOfSourceFolder";
     public final static String CONFIG_SOURCE_FILE_NAME = "nameOfSourceFile";
-    //------------
+    public final static String PNG = "PNG";
+    public final static String BMP = "BMP";
+    public final static String TIFF = "TIFF";
+    public final static String JPG = "JPG";
+    public final static String GIF = "GIF";
+    //------Command Options------
     public final static String SOURCE_FOLDER_PATH_OPTION = "sfp";
     public final static String SOURCE_FOLDER_PATH_LONG_OPTION = "source_folder_path";
     public final static String SOURCE_FILE_NAME_OPTION = "sfn";
@@ -28,6 +33,8 @@ public class Constants {
     public final static String CONFIG_LONG_OPTION = "config";
     public final static String HELP_OPTION = "h";
     public final static String HELP_LONG_OPTION = "help";
+    public final static String TEMP_FOLDER_OPTION = "tmp";
+    public final static String TEMP_LONG_OPTION = "temp";
     //------------
 
     //--- Conversion types --------------------
@@ -63,6 +70,8 @@ public class Constants {
     public final static String JPG_TO_BMP = "jpgtobmp";
     public final static String JPG_TO_PNG = "jpgtopng";
     public final static String JPG_TO_GIF = "jpgtogif";
+    //------------ PDF TO SVG-----------------------------
+    public final static String PDF_TO_SVG = "pdftosvg";
 
     // messages
     public final static String CONVERSION_SUCCESS = "Conversion done successfully";
@@ -72,7 +81,8 @@ public class Constants {
     public final static String DESC_DFP = "Destination folder path";
     public final static String DESC_DFN = "Name of destination file";
     public final static String DESC_CONFIG = "Configuration file name with path";
-    public final static String DESC_CONVERSION_TYPE = "Type of conversion [" + DOC_TO_PDF + "," + DOCX_TO_PDF + "," + PPT_TO_PDF + "," + PPTX_TO_PDF + "," + XLS_TO_PDF + "," + XLSX_TO_PDF + "]";
+    public final static String DESC_TEMP = "Temporary folder path.";
+    public final static String DESC_CONVERSION_TYPE = "Type of conversion [";
 
     //---- Error messages
     public final static String ERR_SOURCE_DEST_FOLDER_NOT_EXISTS = ERROR + "Source/destination path does not exists";
@@ -82,5 +92,6 @@ public class Constants {
     public final static String ERR_NOT_LOAD_SOURCE_FILE = ERROR + "Cannot load sourceFile";
     public final static String ERR_CMD_ARG_NOT_PARSED = ERROR + "Unable to parse command-line arguments";
     public final static String ERR_NO_CONVERSION_TYPE_FOUND = ERROR + "Coversion type not matched ";
+    public final static String ERR_TEMP_FOLDER_NO_FOUND = ERROR + "For this conversion, please configure temporary folder path.\n Also make sure it has read/write permissions.";
 
 }

@@ -2,8 +2,9 @@ package pconvert;
 
 import com.sun.star.frame.XComponentLoader;
 import java.io.File;
-import java.io.FileReader; 
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import static java.lang.System.out;
 import java.util.Arrays;
@@ -26,6 +27,7 @@ import org.apache.commons.cli.ParseException;
 import pconvert.image_to_image_conversion.ImageToImageConversion;
 import pconvert.oo_to_pdf_conversion.ConfigureOOXDesktop;
 import pconvert.oo_to_pdf_conversion.OfficeToPDFConversion;
+import pconvert.pdftosvg.PDFToSVGConversion;
 
 /**
  *
@@ -38,7 +40,7 @@ public class CmdLineOptionConfiguration {
      *
      * @return Definition of command-line options.
      */
-    public static Options generateOptions() {
+    public static Options generateOptions(String types) {
 
         final Option helpOption = Option.builder(Constants.HELP_OPTION)
                 .longOpt(Constants.HELP_LONG_OPTION)
@@ -67,12 +69,17 @@ public class CmdLineOptionConfiguration {
         final Option typeOption = Option.builder(Constants.TYPE_OPTION)
                 .hasArg()
                 .longOpt(Constants.TYPE_LONG_OPTION)
-                .desc(Constants.DESC_CONVERSION_TYPE)
+                .desc(Constants.DESC_CONVERSION_TYPE + types + "]")
                 .build();
         final Option configOption = Option.builder(Constants.CONFIG_OPTION)
                 .longOpt(Constants.CONFIG_LONG_OPTION)
                 .hasArg()
                 .desc(Constants.DESC_CONFIG)
+                .build();
+        final Option tempOption = Option.builder(Constants.TEMP_FOLDER_OPTION)
+                .longOpt(Constants.TEMP_LONG_OPTION)
+                .hasArg()
+                .desc(Constants.DESC_TEMP)
                 .build();
         final Options options = new Options();
         // options.addOption(configOption);
@@ -83,6 +90,7 @@ public class CmdLineOptionConfiguration {
         options.addOption(dfnOption);
         options.addOption(typeOption);
         options.addOption(configOption);
+        options.addOption(tempOption);
         return options;
     }
 
@@ -151,9 +159,12 @@ public class CmdLineOptionConfiguration {
      *@param args, argument from command line
      */
     public void init(String[] args) {
-        Options generateOptions = generateOptions();
-        final CommandLine commandLine = generateCommandLine(generateOptions, args);
         try {
+
+            Options generateOptions = generateOptions(readDataConfig());
+
+            final CommandLine commandLine = generateCommandLine(generateOptions, args);
+
             if (commandLine != null) {
                 //---------Show HELP and exit programme-------------
                 if (commandLine.hasOption(Constants.HELP_OPTION)) {
@@ -199,19 +210,19 @@ public class CmdLineOptionConfiguration {
             nameOfDestinationFile = commandLine.hasOption(Constants.DEST_FILE_NAME_OPTION) ? commandLine.getOptionValue(Constants.DEST_FILE_NAME_OPTION) : props.getProperty(Constants.CONFIG_DEST_FILE_NAME);
             pathOfSourceFolder = commandLine.hasOption(Constants.SOURCE_FOLDER_PATH_OPTION) ? commandLine.getOptionValue(Constants.SOURCE_FOLDER_PATH_OPTION) : props.getProperty(Constants.CONFIG_SOURCE_FOLDER_PATH);
             nameOfSourceFile = commandLine.hasOption(Constants.SOURCE_FILE_NAME_OPTION) ? commandLine.getOptionValue(Constants.SOURCE_FILE_NAME_OPTION) : props.getProperty(Constants.CONFIG_SOURCE_FILE_NAME);
-            tempFolder = props.getProperty(Constants.CONFIG_TEMP_FOLDER_PATH);
+            tempFolder = commandLine.hasOption(Constants.TEMP_FOLDER_OPTION) ? commandLine.getOptionValue(Constants.TEMP_FOLDER_OPTION) : props.getProperty(Constants.CONFIG_TEMP_FOLDER_PATH);
             conversionType = commandLine.getOptionValue(Constants.TYPE_OPTION);
             //---------
 
             // Configure the converter
             pdfc = new ConfigInfoModel();
-            pdfc.setOOLibPath(ooLibPath);
-            pdfc.setPathOfDestinationFolder(pathOfDestinationFolder);
-            pdfc.setNameOfDestinationFile(nameOfDestinationFile);
-            pdfc.setPathOfSourceFolder(pathOfSourceFolder);
-            pdfc.setNameOfSourceFile(nameOfSourceFile);
-            pdfc.setTempFolder(tempFolder);
-            pdfc.setConversionType(conversionType);
+            pdfc.setOOLibPath(ooLibPath.trim());
+            pdfc.setPathOfDestinationFolder(pathOfDestinationFolder.trim());
+            pdfc.setNameOfDestinationFile(nameOfDestinationFile.trim());
+            pdfc.setPathOfSourceFolder(pathOfSourceFolder.trim());
+            pdfc.setNameOfSourceFile(nameOfSourceFile.trim());
+            pdfc.setTempFolder(tempFolder.trim());
+            pdfc.setConversionType(conversionType.trim());
 
             // Exit program if paths are not valid.
             if (!validate(pdfc)) {
@@ -240,6 +251,8 @@ public class CmdLineOptionConfiguration {
             System.err.println(Constants.ERR_SOURCE_DEST_FOLDER_NOT_EXISTS);
         } else if (!Utility.isFilePathExists(new File(model.getPathOfSourceFolder() + model.getNameOfSourceFile()))) {
             System.err.println(Constants.ERR_SOURCE_FILE_NOT_EXISTS);
+        } else if (!Utility.isDirecotryPathExists(new File(model.getTempFolder())) && Constants.PDF_TO_SVG.equalsIgnoreCase(model.getConversionType())) {
+            System.err.println(Constants.ERR_TEMP_FOLDER_NO_FOUND);
         } else {
             validate = true;
         }
@@ -296,6 +309,10 @@ public class CmdLineOptionConfiguration {
                     executorCompletionService.submit(new ImageToImageConversion(configInfoModel));
                     executor.shutdown();
                     break;
+                case Constants.PDF_TO_SVG:
+                    executorCompletionService.submit(new PDFToSVGConversion(configInfoModel));
+                    executor.shutdown();
+                    break;
                 default:
                     System.out.println(Constants.ERR_NO_CONVERSION_TYPE_FOUND);
             }
@@ -329,5 +346,21 @@ public class CmdLineOptionConfiguration {
 
         scheduler.scheduleAtFixedRate(taskToCheckAllFutureCompleted, initialDelay, periodicDelay,
                 TimeUnit.SECONDS);
+    }
+
+    private String readDataConfig() {
+        try {
+            ClassLoader loader = ClassLoader.getSystemClassLoader();
+            InputStream is = loader.getResourceAsStream("pconvert/data.properties");
+            Properties props = new Properties();
+            props.load(is);
+            is.close();
+            return props.getProperty("conversion_types");
+
+        } catch (Exception ex) {
+            System.out.println("Could not get configuration from config.properties: "
+                    + ex.getMessage());
+        }
+        return "";
     }
 }

@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import pconvert.ConfigInfoModel;
 import pconvert.Constants;
+import pconvert.IConversion;
 import pconvert.Utility;
 
 /**
@@ -19,7 +20,7 @@ import pconvert.Utility;
  *
  * Used Callable to get callback on thread completion.
  */
-public class OfficeToPDFConversion implements Callable<Boolean> {
+public class OfficeToPDFConversion implements Callable<Boolean>, IConversion {
 
     private final XComponentLoader xComponentLoader;
 
@@ -30,6 +31,7 @@ public class OfficeToPDFConversion implements Callable<Boolean> {
         this.xComponentLoader = xComponentLoader;
     }
 
+    @Override
     public boolean convert() {
 
         try {
