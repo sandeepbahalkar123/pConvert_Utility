@@ -105,7 +105,15 @@ public class OfficeToPDFConversion implements Callable<Boolean>, IConversion {
 
     @Override
     public Boolean call() throws Exception {
-        return convert();
+        boolean convert = convert();
+        //delete temporary created .~lock files.
+        if (convert) {
+            File file = new File(model.getPathOfSourceFolder() + ".~lock." + model.getNameOfSourceFile()
+                    + "#");
+            if (file.exists()) {
+                file.delete();
+            }
+        }
+        return convert;
     }
-
 }

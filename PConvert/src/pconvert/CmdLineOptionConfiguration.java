@@ -27,7 +27,7 @@ import org.apache.commons.cli.ParseException;
 import pconvert.image_to_image_conversion.ImageToImageConversion;
 import pconvert.oo_to_pdf_conversion.ConfigureOOXDesktop;
 import pconvert.oo_to_pdf_conversion.OfficeToPDFConversion;
-import pconvert.pdftosvg.PDFToSVGConversion;
+import pconvert.pdftoimg.PDFToImageConversion;
 
 /**
  *
@@ -253,6 +253,8 @@ public class CmdLineOptionConfiguration {
             System.err.println(Constants.ERR_SOURCE_FILE_NOT_EXISTS);
         } else if (!Utility.isDirecotryPathExists(new File(model.getTempFolder())) && Constants.PDF_TO_SVG.equalsIgnoreCase(model.getConversionType())) {
             System.err.println(Constants.ERR_TEMP_FOLDER_NO_FOUND);
+        } else if (!model.getConversionType().endsWith(Utility.getFileExtension(new File(model.getNameOfDestinationFile())))) {
+            System.err.println(Constants.ERR_CONVERSION_TYPE_DEST_FILE_EXTENSION_NOT_MATCHED);
         } else {
             validate = true;
         }
@@ -310,7 +312,11 @@ public class CmdLineOptionConfiguration {
                     executor.shutdown();
                     break;
                 case Constants.PDF_TO_SVG:
-                    executorCompletionService.submit(new PDFToSVGConversion(configInfoModel));
+                case Constants.PDF_TO_BMP:
+                case Constants.PDF_TO_GIF:
+                case Constants.PDF_TO_JPG:
+                case Constants.PDF_TO_PNG:
+                    executorCompletionService.submit(new PDFToImageConversion(configInfoModel));
                     executor.shutdown();
                     break;
                 default:

@@ -70,8 +70,12 @@ public class Constants {
     public final static String JPG_TO_BMP = "jpgtobmp";
     public final static String JPG_TO_PNG = "jpgtopng";
     public final static String JPG_TO_GIF = "jpgtogif";
-    //------------ PDF TO SVG-----------------------------
+    //------------ PDF TO IMAGE-----------------------------
     public final static String PDF_TO_SVG = "pdftosvg";
+    public final static String PDF_TO_JPG = "pdftojpg";
+    public final static String PDF_TO_PNG = "pdftopng";
+    public final static String PDF_TO_BMP = "pdftobmp";
+    public final static String PDF_TO_GIF = "pdftogif";
 
     // messages
     public final static String CONVERSION_SUCCESS = "Conversion done successfully";
@@ -93,5 +97,6 @@ public class Constants {
     public final static String ERR_CMD_ARG_NOT_PARSED = ERROR + "Unable to parse command-line arguments";
     public final static String ERR_NO_CONVERSION_TYPE_FOUND = ERROR + "Coversion type not matched ";
     public final static String ERR_TEMP_FOLDER_NO_FOUND = ERROR + "For this conversion, please configure temporary folder path.\n Also make sure it has read/write permissions.";
+    public final static String ERR_CONVERSION_TYPE_DEST_FILE_EXTENSION_NOT_MATCHED = ERROR + "Conversion type and destination file extension did not matched.";
 
 }
