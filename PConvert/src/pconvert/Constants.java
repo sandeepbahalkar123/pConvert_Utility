@@ -18,6 +18,7 @@ public class Constants {
     public final static String TIFF = "TIFF";
     public final static String JPG = "JPG";
     public final static String GIF = "GIF";
+    public final static String SVG = "SVG";
     //------Command Options------
     public final static String SOURCE_FOLDER_PATH_OPTION = "sfp";
     public final static String SOURCE_FOLDER_PATH_LONG_OPTION = "source_folder_path";
@@ -45,6 +46,42 @@ public class Constants {
     public final static String PPTX_TO_PDF = "pptxtopdf";
     public final static String XLS_TO_PDF = "xlstopdf";
     public final static String XLSX_TO_PDF = "xlsxtopdf";
+    //------------MS-OFFICE TO IMAGE
+    public final static String DOC_TO_PNG = "doctopng";
+    public final static String DOC_TO_JPG = "doctojpg";
+    public final static String DOC_TO_SVG = "doctosvg";
+    public final static String DOC_TO_GIF = "doctogif";
+    public final static String DOC_TO_BMP = "doctobmp";
+
+    public final static String DOCX_TO_PNG = "docxtopng";
+    public final static String DOCX_TO_JPG = "docxtojpg";
+    public final static String DOCX_TO_SVG = "docxtosvg";
+    public final static String DOCX_TO_GIF = "docxtogif";
+    public final static String DOCX_TO_BMP = "docxtobmp";
+
+    public final static String PPT_TO_PNG = "ppttopng";
+    public final static String PPT_TO_JPG = "ppttojpg";
+    public final static String PPT_TO_SVG = "ppttosvg";
+    public final static String PPT_TO_GIF = "ppttogif";
+    public final static String PPT_TO_BMP = "ppttobmp";
+
+    public final static String PPTX_TO_PNG = "pptxtopng";
+    public final static String PPTX_TO_JPG = "pptxtojpg";
+    public final static String PPTX_TO_SVG = "pptxtosvg";
+    public final static String PPTX_TO_GIF = "pptxtogif";
+    public final static String PPTX_TO_BMP = "pptxtobmp";
+
+    public final static String XLS_TO_PNG = "xlstopng";
+    public final static String XLS_TO_JPG = "xlstojpg";
+    public final static String XLS_TO_SVG = "xlstosvg";
+    public final static String XLS_TO_GIF = "xlstogif";
+    public final static String XLS_TO_BMP = "xlstobmp";
+
+    public final static String XLSX_TO_PNG = "xlsxtopng";
+    public final static String XLSX_TO_JPG = "xlsxtojpg";
+    public final static String XLSX_TO_SVG = "xlsxtosvg";
+    public final static String XLSX_TO_GIF = "xlsxtogif";
+    public final static String XLSX_TO_BMP = "xlsxtobmp";
     //------------IMAGE TO OTHER IMAGE FORMAT
     public final static String TIFF_TO_BMP = "tifftobmp";
     public final static String TIFF_TO_GIF = "tifftogif";

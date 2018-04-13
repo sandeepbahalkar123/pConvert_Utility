@@ -12,9 +12,7 @@ import java.util.Properties;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.cli.CommandLine;
@@ -25,6 +23,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import pconvert.image_to_image_conversion.ImageToImageConversion;
+import pconvert.office_to_image.OfficeToImageConversion;
 import pconvert.oo_to_pdf_conversion.ConfigureOOXDesktop;
 import pconvert.oo_to_pdf_conversion.OfficeToPDFConversion;
 import pconvert.pdftoimg.PDFToImageConversion;
@@ -285,8 +284,46 @@ public class CmdLineOptionConfiguration {
                     OfficeToPDFConversion officeToPDFConversion = new OfficeToPDFConversion(xComponentLoader, configInfoModel);
                     executorCompletionService.submit(officeToPDFConversion);
                     executor.shutdown();
-                    doScheduleToCloseApp();
+                    Utility.doScheduleToCloseApp();
                     //---
+                    break;
+                case Constants.DOC_TO_PNG:
+                case Constants.DOC_TO_JPG:
+                case Constants.DOC_TO_SVG:
+                case Constants.DOC_TO_GIF:
+                case Constants.DOC_TO_BMP:
+
+                case Constants.DOCX_TO_PNG:
+                case Constants.DOCX_TO_JPG:
+                case Constants.DOCX_TO_SVG:
+                case Constants.DOCX_TO_GIF:
+                case Constants.DOCX_TO_BMP:
+
+                case Constants.PPT_TO_PNG:
+                case Constants.PPT_TO_JPG:
+                case Constants.PPT_TO_SVG:
+                case Constants.PPT_TO_GIF:
+                case Constants.PPT_TO_BMP:
+
+                case Constants.PPTX_TO_PNG:
+                case Constants.PPTX_TO_JPG:
+                case Constants.PPTX_TO_SVG:
+                case Constants.PPTX_TO_GIF:
+                case Constants.PPTX_TO_BMP:
+
+                case Constants.XLS_TO_PNG:
+                case Constants.XLS_TO_JPG:
+                case Constants.XLS_TO_SVG:
+                case Constants.XLS_TO_GIF:
+                case Constants.XLS_TO_BMP:
+
+                case Constants.XLSX_TO_PNG:
+                case Constants.XLSX_TO_JPG:
+                case Constants.XLSX_TO_SVG:
+                case Constants.XLSX_TO_GIF:
+                case Constants.XLSX_TO_BMP:
+                    executorCompletionService.submit(new OfficeToImageConversion(configInfoModel));
+                    executor.shutdown();
                     break;
                 case Constants.TIFF_TO_BMP:
                 case Constants.GIF_TO_BMP:
@@ -331,27 +368,6 @@ public class CmdLineOptionConfiguration {
 
         }
 
-    }
-
-    // This is done , to forcefully close app, after conversion done.
-    private void doScheduleToCloseApp() {
-
-        ScheduledExecutorService scheduler
-                = Executors.newScheduledThreadPool(1);
-
-        final Thread taskToCheckAllFutureCompleted = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                scheduler.shutdown();
-                ConfigureOOXDesktop.stopXDesktop();
-            }
-        });
-
-        int initialDelay = 50;
-        int periodicDelay = 10;
-
-        scheduler.scheduleAtFixedRate(taskToCheckAllFutureCompleted, initialDelay, periodicDelay,
-                TimeUnit.SECONDS);
     }
 
     private String readDataConfig() {

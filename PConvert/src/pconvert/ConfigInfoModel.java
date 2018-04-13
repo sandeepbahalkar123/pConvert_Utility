@@ -1,11 +1,10 @@
-
 package pconvert;
 
 /**
  *
  * @author riteshpandhurkar
  */
-public class ConfigInfoModel {
+public class ConfigInfoModel implements Cloneable {
 
     private String ooLibPath = "";
     private String pathOfDestinationFolder = "";
@@ -86,4 +85,7 @@ public class ConfigInfoModel {
         return "ConfigInfoModel{" + "ooLibPath=" + ooLibPath + ", pathOfDestinationFolder=" + pathOfDestinationFolder + ", nameOfDestinationFile=" + nameOfDestinationFile + ", pathOfSourceFolder=" + pathOfSourceFolder + ", nameOfSourceFile=" + nameOfSourceFile + ", tempFolder=" + tempFolder + ", conversionType=" + conversionType + '}';
     }
 
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }

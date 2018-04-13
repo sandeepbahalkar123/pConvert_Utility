@@ -9,7 +9,6 @@ import com.icafe4j.util.FileUtils;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -50,7 +49,7 @@ public class PDFToImageConversion implements Callable<Boolean>, IConversion {
 
         //this is done to get conversion type and set as a extension to file
         String replace = Utility.getFileExtension(new File(model.getNameOfDestinationFile()));
-        if (model.getConversionType().equalsIgnoreCase(Constants.PDF_TO_SVG)) {
+        if (model.getConversionType().toUpperCase().endsWith(Constants.SVG)) {
             return convertToSVGImageType(replace);
         } else {
             return convertToOtherImageType(replace);
@@ -69,7 +68,8 @@ public class PDFToImageConversion implements Callable<Boolean>, IConversion {
 
             for (int page = 0; page < document.getNumberOfPages(); ++page) {
                 BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
-                ImageIOUtil.writeImage(bim, destinationFile + "_page_" + (page + 1) + "." + extension, 300);
+                boolean writeImage = ImageIOUtil.writeImage(bim, destinationFile + "_page_" + (page + 1) + "." + extension, 300);
+                System.out.println("convertToOtherImageType : " + destinationFile + "_page_" + (page + 1) + "." + extension);
             }
             document.close();
             return true;
@@ -141,6 +141,8 @@ public class PDFToImageConversion implements Callable<Boolean>, IConversion {
                 String generatedCMD = "inkscape --without-gui --file " + tempCreatedPDF + " --export-text-to-path --export-plain-svg=" + model.getPathOfDestinationFolder() + fileNameWithoutExtension + "_page_" + page + "." + extension;
 
                 processListMap.put(tempCreatedPDF, Runtime.getRuntime().exec(generatedCMD));
+
+                System.out.println("convertToSVGImageType : " + tempCreatedPDF);
 
             }
             document.close();

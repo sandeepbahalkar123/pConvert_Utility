@@ -6,6 +6,10 @@
 package pconvert;
 
 import java.io.File;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import pconvert.oo_to_pdf_conversion.ConfigureOOXDesktop;
 
 /**
  *
@@ -28,6 +32,27 @@ public class Utility {
 
     public static boolean isFilePathExists(File file) {
         return file.exists() && file.isFile();
+    }
+
+    // This is done , to forcefully close app, after conversion done.
+    public static void doScheduleToCloseApp() {
+
+        ScheduledExecutorService scheduler
+                = Executors.newScheduledThreadPool(1);
+
+        final Thread taskToCheckAllFutureCompleted = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                scheduler.shutdown();
+                ConfigureOOXDesktop.stopXDesktop();
+            }
+        });
+
+        int initialDelay = 50;
+        int periodicDelay = 10;
+
+        scheduler.scheduleAtFixedRate(taskToCheckAllFutureCompleted, initialDelay, periodicDelay,
+                TimeUnit.SECONDS);
     }
 
 }

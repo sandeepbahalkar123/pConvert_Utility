@@ -1,5 +1,6 @@
 package pconvert.oo_to_pdf_conversion;
 
+import com.icafe4j.util.FileUtils;
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XStorable;
@@ -89,7 +90,10 @@ public class OfficeToPDFConversion implements Callable<Boolean>, IConversion {
 
             // Appending the favoured extension to the origin document name
             //  String myResult = workingDir + "letterOutput.pdf";
-            String myResult = newFolderName + model.getNameOfDestinationFile();
+            String nameWithoutExtension = FileUtils.getNameWithoutExtension(new File(model.getNameOfDestinationFile()));
+            String extension = Utility.getFileExtension(new File(model.getNameOfDestinationFile()));
+
+            String myResult = newFolderName + nameWithoutExtension + "." + extension;
 
             xStorable.storeToURL("file:///" + myResult, propertyValues);
 
@@ -98,7 +102,13 @@ public class OfficeToPDFConversion implements Callable<Boolean>, IConversion {
             return true;
         } catch (IOException | RuntimeException ex) {
             Logger.getLogger(OfficeToPDFConversion.class.getName()).log(Level.SEVERE, null, ex);
-
+        } finally {
+            //delete temporary created .~lock files.
+            File file = new File(model.getPathOfSourceFolder() + ".~lock." + model.getNameOfSourceFile()
+                    + "#");
+            if (file.exists()) {
+                file.delete();
+            }
         }
         return false;
     }
@@ -106,14 +116,6 @@ public class OfficeToPDFConversion implements Callable<Boolean>, IConversion {
     @Override
     public Boolean call() throws Exception {
         boolean convert = convert();
-        //delete temporary created .~lock files.
-        if (convert) {
-            File file = new File(model.getPathOfSourceFolder() + ".~lock." + model.getNameOfSourceFile()
-                    + "#");
-            if (file.exists()) {
-                file.delete();
-            }
-        }
         return convert;
     }
 }
