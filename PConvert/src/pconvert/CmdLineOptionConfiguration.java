@@ -37,6 +37,7 @@ public class CmdLineOptionConfiguration {
     /**
      * "Definition" stage of command-line parsing with Apache Commons CLI.
      *
+     * @param types to print conversion type from data.properties
      * @return Definition of command-line options.
      */
     public static Options generateOptions(String types) {

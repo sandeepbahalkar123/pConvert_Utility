@@ -20,7 +20,7 @@ import pconvert.pdftoimg.PDFToImageConversion;
 
 /**
  * This class do office to images conversion
- * Steps : Doc --> PDF then PDF --> Images
+ * Steps : Doc to PDF then PDF to Images
  * @author riteshpandhurkar
  */
 public class OfficeToImageConversion implements Callable<Boolean>, IConversion {
@@ -44,8 +44,6 @@ public class OfficeToImageConversion implements Callable<Boolean>, IConversion {
             // created new thread and submit to excecuter
             XComponentLoader xComponentLoader = ConfigureOOXDesktop.getXComponentLoader(model.getOOLibPath());
             String nameDestFileWithExtension = FileUtils.getNameWithoutExtension(new File(model.getNameOfDestinationFile())) + ".pdf";
-
-            System.out.println("convert() Actual model :" + model.toString());
 
             // make clone of ConfigInfoModel to create doc to pdf conversion first
             ConfigInfoModel tempModelForOfficeToPDFConversion = (ConfigInfoModel) model.clone();

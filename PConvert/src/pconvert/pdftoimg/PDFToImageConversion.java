@@ -69,8 +69,7 @@ public class PDFToImageConversion implements Callable<Boolean>, IConversion {
             for (int page = 0; page < document.getNumberOfPages(); ++page) {
                 BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
                 boolean writeImage = ImageIOUtil.writeImage(bim, destinationFile + "_page_" + (page + 1) + "." + extension, 300);
-                System.out.println("convertToOtherImageType : " + destinationFile + "_page_" + (page + 1) + "." + extension);
-            }
+             }
             document.close();
             return true;
         } catch (IOException ex) {
@@ -141,8 +140,6 @@ public class PDFToImageConversion implements Callable<Boolean>, IConversion {
                 String generatedCMD = "inkscape --without-gui --file " + tempCreatedPDF + " --export-text-to-path --export-plain-svg=" + model.getPathOfDestinationFolder() + fileNameWithoutExtension + "_page_" + page + "." + extension;
 
                 processListMap.put(tempCreatedPDF, Runtime.getRuntime().exec(generatedCMD));
-
-                System.out.println("convertToSVGImageType : " + tempCreatedPDF);
 
             }
             document.close();
