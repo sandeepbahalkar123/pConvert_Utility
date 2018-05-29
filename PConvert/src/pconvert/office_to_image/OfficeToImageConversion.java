@@ -69,6 +69,7 @@ public class OfficeToImageConversion implements Callable<Boolean>, IConversion {
 
                 //Delete files from TempFolder.
                 File file = new File(model.getTempFolder() + nameDestFileWithExtension);
+                file.delete();
 
                 //to forcefully stop application, after all conversion done.
                 Utility.doScheduleToCloseApp();
