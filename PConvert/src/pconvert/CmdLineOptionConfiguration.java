@@ -23,6 +23,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import pconvert.image_to_image_conversion.ImageToImageConversion;
+import pconvert.image_to_image_conversion.img_to_svg_.ImageToSVGConversion;
 import pconvert.office_to_image.OfficeToImageConversion;
 import pconvert.oo_to_pdf_conversion.ConfigureOOXDesktop;
 import pconvert.oo_to_pdf_conversion.OfficeToPDFConversion;
@@ -251,7 +252,13 @@ public class CmdLineOptionConfiguration {
             System.err.println(Constants.ERR_SOURCE_DEST_FOLDER_NOT_EXISTS);
         } else if (!Utility.isFilePathExists(new File(model.getPathOfSourceFolder() + model.getNameOfSourceFile()))) {
             System.err.println(Constants.ERR_SOURCE_FILE_NOT_EXISTS);
-        } else if (!Utility.isDirecotryPathExists(new File(model.getTempFolder())) && Constants.PDF_TO_SVG.equalsIgnoreCase(model.getConversionType())) {
+        } else if (!Utility.isDirecotryPathExists(new File(model.getTempFolder()))
+                && (Constants.PDF_TO_SVG.equalsIgnoreCase(model.getConversionType())
+                || Constants.JPG_TO_SVG.equalsIgnoreCase(model.getConversionType())
+                || Constants.PNG_TO_SVG.equalsIgnoreCase(model.getConversionType())
+                || Constants.TIFF_TO_SVG.equalsIgnoreCase(model.getConversionType())
+                || Constants.GIF_TO_SVG.equalsIgnoreCase(model.getConversionType())
+                || Constants.BMP_TO_SVG.equalsIgnoreCase(model.getConversionType()))) {
             System.err.println(Constants.ERR_TEMP_FOLDER_NO_FOUND);
         } else if (!model.getConversionType().endsWith(Utility.getFileExtension(new File(model.getNameOfDestinationFile())))) {
             System.err.println(Constants.ERR_CONVERSION_TYPE_DEST_FILE_EXTENSION_NOT_MATCHED);
@@ -347,6 +354,14 @@ public class CmdLineOptionConfiguration {
                 case Constants.BMP_TO_TIFF:
                 case Constants.PNG_TO_TIFF:
                     executorCompletionService.submit(new ImageToImageConversion(configInfoModel));
+                    executor.shutdown();
+                    break;
+                case Constants.JPG_TO_SVG:
+                case Constants.TIFF_TO_SVG:
+                case Constants.BMP_TO_SVG:
+                case Constants.PNG_TO_SVG:
+                case Constants.GIF_TO_SVG:
+                    executorCompletionService.submit(new ImageToSVGConversion(configInfoModel));
                     executor.shutdown();
                     break;
                 case Constants.PDF_TO_SVG:

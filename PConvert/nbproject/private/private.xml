@@ -3,10 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/JAVA_PROJECTS/pConvert_Git_Netbeans/pConvert_Utility/PConvert/src/pconvert/office_to_image/OfficeToImageConversion.java</file>
-            <file>file:/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/JAVA_PROJECTS/pConvert_Git_Netbeans/pConvert_Utility/PConvert/src/pconvert/PConvertMain.java</file>
-            <file>file:/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/JAVA_PROJECTS/pConvert_Git_Netbeans/pConvert_Utility/PConvert/src/pconvert/oo_to_pdf_conversion/OfficeToPDFConversion.java</file>
-            <file>file:/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/JAVA_PROJECTS/pConvert_Git_Netbeans/pConvert_Utility/PConvert/src/pconvert/CmdLineOptionConfiguration.java</file>
+            <file>file:/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/JAVA_PROJECTS/pConvert_Git_Netbeans/pConvert_Utility/PConvert/src/pconvert/image_to_pdf_conversion/ImageToPDFConversion.java</file>
+            <file>file:/home/riteshpandhurkar/riteshpandhurkar/Projects/Scorge_Projects/JAVA_PROJECTS/pConvert_Git_Netbeans/pConvert_Utility/PConvert/src/pconvert/image_to_image_conversion/ImageToImageConversion.java</file>
         </group>
     </open-files>
 </project-private>

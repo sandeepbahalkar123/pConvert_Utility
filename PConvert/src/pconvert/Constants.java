@@ -87,26 +87,31 @@ public class Constants {
     public final static String TIFF_TO_GIF = "tifftogif";
     public final static String TIFF_TO_PNG = "tifftopng";
     public final static String TIFF_TO_JPG = "tifftojpg";
+    public final static String TIFF_TO_SVG = "tifftosvg";
 
     public final static String BMP_TO_TIFF = "bmptotiff";
     public final static String BMP_TO_GIF = "bmptogif";
     public final static String BMP_TO_PNG = "bmptopng";
     public final static String BMP_TO_JPG = "bmptojpg";
+    public final static String BMP_TO_SVG = "bmptosvg";
 
     public final static String GIF_TO_TIFF = "giftotiff";
     public final static String GIF_TO_BMP = "giftobmp";
     public final static String GIF_TO_PNG = "giftopng";
     public final static String GIF_TO_JPG = "giftojpg";
+    public final static String GIF_TO_SVG = "giftosvg";
 
     public final static String PNG_TO_TIFF = "pngtotiff";
     public final static String PNG_TO_BMP = "pngtobmp";
     public final static String PNG_TO_GIF = "pngtogif";
     public final static String PNG_TO_JPG = "pngtojpg";
+    public final static String PNG_TO_SVG = "pngtosvg";
 
     public final static String JPG_TO_TIFF = "jpgtotiff";
     public final static String JPG_TO_BMP = "jpgtobmp";
     public final static String JPG_TO_PNG = "jpgtopng";
     public final static String JPG_TO_GIF = "jpgtogif";
+    public final static String JPG_TO_SVG = "jpgtosvg";
     //------------ PDF TO IMAGE-----------------------------
     public final static String PDF_TO_SVG = "pdftosvg";
     public final static String PDF_TO_JPG = "pdftojpg";
