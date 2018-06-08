@@ -30,6 +30,9 @@ import pconvert.Utility;
 /**
  *
  * @author riteshpandhurkar
+ *
+ * For SVG image conversion: 1. Created PDF converted to .svgz format(this is
+ * compressed format using inkscape) 2. Rename .svgz extension to svg.
  */
 public class PDFToImageConversion implements Callable<Boolean>, IConversion {
 
@@ -69,7 +72,7 @@ public class PDFToImageConversion implements Callable<Boolean>, IConversion {
             for (int page = 0; page < document.getNumberOfPages(); ++page) {
                 BufferedImage bim = pdfRenderer.renderImageWithDPI(page, 300, ImageType.RGB);
                 boolean writeImage = ImageIOUtil.writeImage(bim, destinationFile + "_page_" + (page + 1) + "." + extension, 300);
-             }
+            }
             document.close();
             return true;
         } catch (IOException ex) {
@@ -96,8 +99,14 @@ public class PDFToImageConversion implements Callable<Boolean>, IConversion {
                 } else {
                     for (Map.Entry<String, Process> entry : tempList.entrySet()) {
                         if (!entry.getValue().isAlive()) {
-                            boolean delete = new File(entry.getKey()).delete();
-                            runningProcessList.remove(entry.getKey());
+
+                            //key = tempPDF|<destFileName_page_0>.svgz
+                            String tempAndDestFileName = entry.getKey();
+                            String[] split = tempAndDestFileName.split("\\|");
+                            //rename file extension from svgz to svg
+                            Utility.changeFileExtension(new File(split[1]), "svg");
+                            boolean delete = new File(split[0]).delete();
+                            runningProcessList.remove(tempAndDestFileName);
                         }
                     }
                 }
@@ -112,6 +121,9 @@ public class PDFToImageConversion implements Callable<Boolean>, IConversion {
     }
 
     private boolean convertToSVGImageType(String extension) {
+
+        // Create svg with .svgz extension to reduce size of generated svg
+        extension = extension + "z";
         String tempFolderPath = model.getTempFolder();
         HashMap<String, Process> processListMap = new HashMap<String, Process>();
         try {
@@ -137,9 +149,10 @@ public class PDFToImageConversion implements Callable<Boolean>, IConversion {
 
                 String fileNameWithoutExtension = FileUtils.getNameWithoutExtension(new File(model.getNameOfDestinationFile()));
 
-                String generatedCMD = "inkscape --without-gui --file " + tempCreatedPDF + " --export-text-to-path --export-plain-svg=" + model.getPathOfDestinationFolder() + fileNameWithoutExtension + "_page_" + page + "." + extension;
+                String destFileName = model.getPathOfDestinationFolder() + fileNameWithoutExtension + "_page_" + page + "." + extension;
+                String generatedCMD = "inkscape --without-gui --file " + tempCreatedPDF + " --export-text-to-path --export-plain-svg=" + destFileName;
 
-                processListMap.put(tempCreatedPDF, Runtime.getRuntime().exec(generatedCMD));
+                processListMap.put(tempCreatedPDF + "|" + destFileName, Runtime.getRuntime().exec(generatedCMD));
 
             }
             document.close();

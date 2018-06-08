@@ -26,6 +26,16 @@ public class Utility {
         }
     }
 
+    public static File changeFileExtension(File file, String extension) {
+        String filename = file.getName();
+        if (filename.contains(".")) {
+            filename = filename.substring(0, filename.lastIndexOf('.'));
+        }
+        filename += "." + extension;
+        file.renameTo(new File(file.getParentFile(), filename));
+        return file;
+    }
+
     public static boolean isDirecotryPathExists(File file) {
         return file.exists() && file.isDirectory();
     }
