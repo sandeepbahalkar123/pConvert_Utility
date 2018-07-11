@@ -13,6 +13,7 @@ public class Constants {
     public final static String CONFIG_DEST_FILE_NAME = "nameOfDestinationFile";
     public final static String CONFIG_SOURCE_FOLDER_PATH = "pathOfSourceFolder";
     public final static String CONFIG_SOURCE_FILE_NAME = "nameOfSourceFile";
+    public final static String PDF = "PDF";
     public final static String PNG = "PNG";
     public final static String BMP = "BMP";
     public final static String TIFF = "TIFF";
@@ -118,6 +119,14 @@ public class Constants {
     public final static String PDF_TO_PNG = "pdftopng";
     public final static String PDF_TO_BMP = "pdftobmp";
     public final static String PDF_TO_GIF = "pdftogif";
+    //----------- HTML TO IMAGE/PDF ------------------------
+    public final static String HTML_TO_PDF = "htmltopdf";
+    public final static String HTML_TO_PNG = "htmltopng";
+    public final static String HTML_TO_JPG = "htmltojpg";
+    public final static String HTML_TO_SVG = "htmltosvg";
+    public final static String HTML_TO_TIFF = "htmltotiff";
+    public final static String HTML_TO_GIF = "htmltogif";
+    public final static String HTML_TO_BMP = "htmltobmp";
 
     // messages
     public final static String CONVERSION_SUCCESS = "Conversion done successfully";

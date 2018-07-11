@@ -22,6 +22,7 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import pconvert.html_to_images.HtmlToImagePDFConversion;
 import pconvert.image_to_image_conversion.ImageToImageConversion;
 import pconvert.image_to_image_conversion.img_to_svg_.ImageToSVGConversion;
 import pconvert.office_to_image.OfficeToImageConversion;
@@ -258,7 +259,14 @@ public class CmdLineOptionConfiguration {
                 || Constants.PNG_TO_SVG.equalsIgnoreCase(model.getConversionType())
                 || Constants.TIFF_TO_SVG.equalsIgnoreCase(model.getConversionType())
                 || Constants.GIF_TO_SVG.equalsIgnoreCase(model.getConversionType())
-                || Constants.BMP_TO_SVG.equalsIgnoreCase(model.getConversionType()))) {
+                || Constants.BMP_TO_SVG.equalsIgnoreCase(model.getConversionType())
+                || Constants.HTML_TO_JPG.equalsIgnoreCase(model.getConversionType())
+                || Constants.HTML_TO_PNG.equalsIgnoreCase(model.getConversionType())
+                || Constants.HTML_TO_PDF.equalsIgnoreCase(model.getConversionType())
+                || Constants.HTML_TO_SVG.equalsIgnoreCase(model.getConversionType())
+                || Constants.HTML_TO_BMP.equalsIgnoreCase(model.getConversionType())
+                || Constants.HTML_TO_TIFF.equalsIgnoreCase(model.getConversionType())
+                || Constants.HTML_TO_GIF.equalsIgnoreCase(model.getConversionType()))) {
             System.err.println(Constants.ERR_TEMP_FOLDER_NO_FOUND);
         } else if (!model.getConversionType().endsWith(Utility.getFileExtension(new File(model.getNameOfDestinationFile())))) {
             System.err.println(Constants.ERR_CONVERSION_TYPE_DEST_FILE_EXTENSION_NOT_MATCHED);
@@ -370,6 +378,16 @@ public class CmdLineOptionConfiguration {
                 case Constants.PDF_TO_JPG:
                 case Constants.PDF_TO_PNG:
                     executorCompletionService.submit(new PDFToImageConversion(configInfoModel));
+                    executor.shutdown();
+                    break;
+                case Constants.HTML_TO_JPG:
+                case Constants.HTML_TO_PNG:
+                case Constants.HTML_TO_PDF:
+                case Constants.HTML_TO_SVG:
+                case Constants.HTML_TO_TIFF:
+                case Constants.HTML_TO_BMP:
+                case Constants.HTML_TO_GIF:
+                    executorCompletionService.submit(new HtmlToImagePDFConversion(configInfoModel));
                     executor.shutdown();
                     break;
                 default:
